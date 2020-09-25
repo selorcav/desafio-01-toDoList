@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Desafío Vue 1</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<style>
+    #app{
+        text-align: center;
+    }
+</style>
+<body>
+    <div id='app'>
+        <h1>Crear nueva tarea</h1>
+        <div v-if="errorMessage">
+            {{errorMessage}}
+        </div>
+        <label for="tarea">Tarea</label>
+        <input type="text" id="tarea" v-model="newTask" placeholder="Ingresa una nueva tarea">
+        <button v-on:click="addTask">Crear</button>
+        <h2>Lista</h2>
+        <ul>
+            <li v-for="(task, index) in tasks"> {{task}} <button v-on:click="removeTask(index)">Eliminar</button></li>
+        </ul>
+    </div>
+    <script>
+        const app = new Vue ({
+            el: '#app',
+            data: {
+                tasks: [],
+                newTask: "",
+                errorMessage: "",
+                },
+ 
+            methods: {
+                addTask() {
+                let lowerTasks = this.tasks.map(task => task.toLowerCase().replace(" ",""))
+                if (!lowerTasks.includes(this.newTask.toLowerCase().replace(" ",""))) {
+                    this.tasks.push(this.newTask);
+                    this.errorMessage = ""
+                } else {
+                    this.errorMessage = "La tarea ya existe"
+                    }
+                this.newTask ="";
+                },
+                removeTask(index) {
+                    //const index = this.tasks.indexOf(task)
+                    this.tasks.splice(index,1)
+                }
+            }
+        });
+    </script>
+</body>
+</html>
